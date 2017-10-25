@@ -3,7 +3,7 @@ package com.sg.kata.tennis;
 public class Player {
 
 	private String name;
-	private boolean advanced;
+	private boolean advantage;
 	private int pointScore;
 	private int setScore;
 	private boolean isRest;
@@ -42,12 +42,12 @@ public class Player {
 		this.setScore = setScore;
 	}
 
-	public boolean isAdvanced() {
-		return advanced;
+	public boolean isAdvantage() {
+		return advantage;
 	}
 
-	public void setAdvanced(boolean advanced) {
-		this.advanced = advanced;
+	public void setAdvantage(boolean advantage) {
+		this.advantage = advantage;
 	}
 
 	public boolean isRest() {

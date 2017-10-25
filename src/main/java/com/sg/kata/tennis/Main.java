@@ -3,8 +3,8 @@ package com.sg.kata.tennis;
 public class Main implements Runnable {
 
 	public Main() {
-		Thread game = new Thread(this);
-		game.start();
+		Thread match = new Thread(this);
+		match.start();
 
 	}
 
@@ -19,23 +19,23 @@ public class Main implements Runnable {
 
 		Player playerOne = new Player("PLAYER A");
 		Player playerTow = new Player("PLAYER B");
-		Game game = new Game(playerOne, playerTow);
+		Match match = new Match(playerOne, playerTow);
 
-		while (!game.isTheEnd()) {
+		while (!match.isTheEnd()) {
 
 			double ball = Math.random() * 2; 
 
-			checkBeforePlayerWinBall(game);
+			checkBeforePlayerWinBall(match);
 
 			if (ball > 1) {
-				game.winBall(game.getPlayerOne(),
-						game.getPlayerTow());
+				match.winPoint(match.getPlayerOne(),
+						match.getPlayerTwo());
 
 			} else {
-				game.winBall(game.getPlayerTow(),
-						game.getPlayerOne());
+				match.winPoint(match.getPlayerTwo(),
+						match.getPlayerOne());
 			}
-			checkAfterPlayerWinBall(game);
+			checkAfterPlayerWinBall(match);
 
 			try {
 
@@ -48,16 +48,16 @@ public class Main implements Runnable {
 		}
 	}
 
-	public void checkBeforePlayerWinBall(Game game) {
-		game.isDeuceActivated();
-		game.isTieBreakActivated();
+	public void checkBeforePlayerWinBall(Match match) {
+		match.isDeuceActivated();
+		match.isTieBreakActivated();
 
 	}
 
-	public void checkAfterPlayerWinBall(Game game) {
-		game.resetPlayersScores();
-		game.displayScore();
-		game.manageEndOfTheGame();
+	public void checkAfterPlayerWinBall(Match match) {
+		match.resetPlayersScores();
+		match.displayMatchScore();
+		match.manageEndOfTheGame();
 	}
 
 }
