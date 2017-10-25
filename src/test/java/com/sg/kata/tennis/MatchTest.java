@@ -39,33 +39,33 @@ public class MatchTest {
 
 	@Test
 	public void shouldPointScoreBeFifteenIfPlayerWinTheFirstPoint() {
-		match.winPoint(playerNumberTwo, playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
 		assertThat(playerNumberTwo, hasProperty("pointScore", equalTo(15)));
 		assertThat(playerNumberOne, hasProperty("pointScore", equalTo(0)));
 	}
 
 	@Test
 	public void shouldPointsScoreBeThirtyIfPlayerWinTheSecondPoint() {
-		match.winPoint(playerNumberTwo, playerNumberOne);
-		match.winPoint(playerNumberTwo, playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
 		assertThat(playerNumberTwo, hasProperty("pointScore", equalTo(30)));
 		assertThat(playerNumberOne, hasProperty("pointScore", equalTo(0)));
 	}
 
 	@Test
 	public void shouldPointsScoreBeThirtyIfPlayerOneWinTwoPointAndFifteenIfPlayerTwoWinLonlyPoint() {
-		match.winPoint(playerNumberTwo, playerNumberOne);
-		match.winPoint(playerNumberTwo, playerNumberOne);
-		match.winPoint(playerNumberOne, playerNumberTwo);
+		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberOne.winPoint( playerNumberTwo);
 		assertThat(playerNumberTwo, hasProperty("pointScore", equalTo(30)));
 		assertThat(playerNumberOne, hasProperty("pointScore", equalTo(15)));
 	}
 
 	@Test
 	public void shouldSetScoreBeFortyIfPlayerWinThreePoints() {
-		match.winPoint(playerNumberTwo, playerNumberOne);
-		match.winPoint(playerNumberTwo, playerNumberOne);
-		match.winPoint(playerNumberTwo, playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
 		assertThat(playerNumberTwo, hasProperty("pointScore", equalTo(40)));
 		assertThat(playerNumberOne, hasProperty("pointScore", equalTo(0)));
 	}
@@ -79,7 +79,7 @@ public class MatchTest {
 		match.isDeuceActivated();
 		assertThat(match, hasProperty("deuce", is(false)));
 
-		match.winPoint(playerNumberTwo, playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
 		match.isDeuceActivated();
 		assertThat(match, hasProperty("deuce", is(true)));
 	}
@@ -90,7 +90,7 @@ public class MatchTest {
 		winPoints(playerNumberOne, playerNumberTwo, 3);
 		winPoints(playerNumberTwo, playerNumberOne, 3);
 
-		match.winPoint(playerNumberTwo, playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
 		assertThat(playerNumberOne, hasProperty("advantage", is(false)));
 		assertThat(playerNumberTwo, hasProperty("advantage", is(true)));
 	}
@@ -101,8 +101,8 @@ public class MatchTest {
 		winPoints(playerNumberOne, playerNumberTwo, 3);
 		winPoints(playerNumberTwo, playerNumberOne, 4);
 
-		match.winPoint(playerNumberTwo, playerNumberOne);
-		match.winPoint(playerNumberTwo, playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint( playerNumberOne);
 		assertThat(playerNumberTwo, hasProperty("setScore", equalTo(2)));
 		assertThat(playerNumberOne, hasProperty("setScore", equalTo(0)));
 	}
@@ -166,7 +166,7 @@ public class MatchTest {
 
 	private void winPoints(Player winner, Player looser, int n) {
 		IntStream.rangeClosed(1, n).forEach((Integer) -> {
-			match.winPoint(winner, looser);
+			winner.winPoint( looser);
 		});
 	}
 

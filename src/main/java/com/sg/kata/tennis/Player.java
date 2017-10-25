@@ -1,5 +1,9 @@
 package com.sg.kata.tennis;
 
+import static com.sg.kata.tennis.Constants.FORTY;
+import static com.sg.kata.tennis.Constants.MIN_POINTS_GAP_TO_WIN_A_GAME;
+import static com.sg.kata.tennis.Constants.THIRTY;
+
 public class Player {
 
 	private String name;
@@ -57,5 +61,34 @@ public class Player {
 	public void setRest(boolean isRest) {
 		this.isRest = isRest;
 	}
+	
+	public void winPoint( Player looser) {
 
+		if (this.getPointScore() < THIRTY) {
+			this.setPointScore(this.getPointScore() + 15);
+		} else if (this.getPointScore() == THIRTY) {
+			this.setPointScore(FORTY);
+		} else if (looser.isAdvantage()) {
+			looser.setAdvantage(false);
+		} else {
+			boolean isGreatThenTenScoreDiffrence = checkScoreDifference( looser);
+			if (this.isAdvantage() || isGreatThenTenScoreDiffrence) {
+				this.winSet();
+			} else {
+				this.setAdvantage(true);
+			}
+		}
+
+	}
+
+	public Boolean checkScoreDifference( Player looser) {
+		boolean isWinner = false;
+		if (this.getPointScore() == FORTY) {
+			if (this.getPointScore() - looser.getPointScore() >= MIN_POINTS_GAP_TO_WIN_A_GAME) {
+				isWinner = true;
+			}
+		}
+
+		return isWinner;
+	}
 }

@@ -57,16 +57,16 @@ public class Match {
 
 
 
-	public Boolean checkScoreDifference(Player winner, Player looser) {
-		boolean isWinner = false;
-		if (winner.getPointScore() == FORTY) {
-			if (winner.getPointScore() - looser.getPointScore() >= MIN_POINTS_GAP_TO_WIN_A_GAME) {
-				isWinner = true;
-			}
-		}
-
-		return isWinner;
-	}
+//	public Boolean checkScoreDifference(Player winner, Player looser) {
+//		boolean isWinner = false;
+//		if (winner.getPointScore() == FORTY) {
+//			if (winner.getPointScore() - looser.getPointScore() >= MIN_POINTS_GAP_TO_WIN_A_GAME) {
+//				isWinner = true;
+//			}
+//		}
+//
+//		return isWinner;
+//	}
 
 	public void manageEndOfTheGame() {
 		if (this.playerOne.getSetScore() >= FIVE && this.playerTwo.getSetScore() >= FIVE) {
@@ -105,24 +105,24 @@ public class Match {
 		}
 	}
 
-	public void winPoint(Player winner, Player looser) {
-
-		if (winner.getPointScore() < THIRTY) {
-			winner.setPointScore(winner.getPointScore() + 15);
-		} else if (winner.getPointScore() == THIRTY) {
-			winner.setPointScore(FORTY);
-		} else if (looser.isAdvantage()) {
-			looser.setAdvantage(false);
-		} else {
-			boolean isGreatThenTenScoreDiffrence = checkScoreDifference(winner, looser);
-			if (winner.isAdvantage() || isGreatThenTenScoreDiffrence) {
-				winner.winSet();
-			} else {
-				winner.setAdvantage(true);
-			}
-		}
-
-	}
+//	public void winPoint(Player winner, Player looser) {
+//
+//		if (winner.getPointScore() < THIRTY) {
+//			winner.setPointScore(winner.getPointScore() + 15);
+//		} else if (winner.getPointScore() == THIRTY) {
+//			winner.setPointScore(FORTY);
+//		} else if (looser.isAdvantage()) {
+//			looser.setAdvantage(false);
+//		} else {
+//			boolean isGreatThenTenScoreDiffrence = checkScoreDifference(winner, looser);
+//			if (winner.isAdvantage() || isGreatThenTenScoreDiffrence) {
+//				winner.winSet();
+//			} else {
+//				winner.setAdvantage(true);
+//			}
+//		}
+//
+//	}
 
 	public Player getLeadPlayer() {
 		return (playerOne.getSetScore() > playerTwo.getSetScore()) ? playerOne : playerTwo;

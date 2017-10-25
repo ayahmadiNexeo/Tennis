@@ -23,17 +23,15 @@ public class Main implements Runnable {
 
 		while (!match.isTheEnd()) {
 
-			double ball = Math.random() * 2; 
+			double ball = Math.random() * 2;
 
 			checkBeforePlayerWinBall(match);
 
 			if (ball > 1) {
-				match.winPoint(match.getPlayerOne(),
-						match.getPlayerTwo());
+				playerOne.winPoint(match.getPlayerTwo());
 
 			} else {
-				match.winPoint(match.getPlayerTwo(),
-						match.getPlayerOne());
+				playerTow.winPoint(match.getPlayerOne());
 			}
 			checkAfterPlayerWinBall(match);
 
