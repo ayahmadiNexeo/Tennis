@@ -10,6 +10,11 @@ public class Match {
 	private boolean tieBreak;
 	private boolean theEnd;
 
+	public Match() {
+		this.playerOne = new Player(NAME_PLAYER_ONE);
+		this.playerTwo = new Player(NAME_PLAYER_TWO);
+	}
+
 	public Match(Player playerOne, Player playerTow) {
 		this.playerOne = playerOne;
 		this.playerTwo = playerTow;
@@ -55,36 +60,17 @@ public class Match {
 		this.theEnd = theEnd;
 	}
 
-
-
-//	public Boolean checkScoreDifference(Player winner, Player looser) {
-//		boolean isWinner = false;
-//		if (winner.getPointScore() == FORTY) {
-//			if (winner.getPointScore() - looser.getPointScore() >= MIN_POINTS_GAP_TO_WIN_A_GAME) {
-//				isWinner = true;
-//			}
-//		}
-//
-//		return isWinner;
-//	}
-
 	public void manageEndOfTheGame() {
-		if (this.playerOne.getSetScore() >= FIVE && this.playerTwo.getSetScore() >= FIVE) {
-			if (getSetGap()) {
-				this.setTheEnd(true);
-			}
-		} else {
-			if ((this.playerOne.getSetScore() == MIN_SET_SCORE_TO_WIN_A_MATCH
-					|| this.playerTwo.getSetScore() == MIN_SET_SCORE_TO_WIN_A_MATCH) && getSetGap()) {
-				this.setTheEnd(true);
-			}
+
+		if (isAPlayerReachTheMinGameScoreToWinAMatch() && isGameGapAllowsWinASet()) {
+			this.setTheEnd(true);
 		}
 
 	}
 
-	private boolean getSetGap() {
+	private boolean isGameGapAllowsWinASet() {
 
-		return (Math.abs(this.playerTwo.getSetScore() - this.playerOne.getSetScore()) >= MIN_SETS_GAP_TO_WIN_A_MATCH);
+		return (Math.abs(this.playerTwo.getSetScore() - this.playerOne.getSetScore()) >= MIN_GAMES_GAP_TO_WIN_A_MATCH);
 	}
 
 	public Boolean isDeuceActivated() {
@@ -104,25 +90,6 @@ public class Match {
 
 		}
 	}
-
-//	public void winPoint(Player winner, Player looser) {
-//
-//		if (winner.getPointScore() < THIRTY) {
-//			winner.setPointScore(winner.getPointScore() + 15);
-//		} else if (winner.getPointScore() == THIRTY) {
-//			winner.setPointScore(FORTY);
-//		} else if (looser.isAdvantage()) {
-//			looser.setAdvantage(false);
-//		} else {
-//			boolean isGreatThenTenScoreDiffrence = checkScoreDifference(winner, looser);
-//			if (winner.isAdvantage() || isGreatThenTenScoreDiffrence) {
-//				winner.winSet();
-//			} else {
-//				winner.setAdvantage(true);
-//			}
-//		}
-//
-//	}
 
 	public Player getLeadPlayer() {
 		return (playerOne.getSetScore() > playerTwo.getSetScore()) ? playerOne : playerTwo;
@@ -149,31 +116,27 @@ public class Match {
 		scorePlayer.append(player.getSetScore());
 		scorePlayer.append(POINTS);
 		if (this.isDeuce() && player.isAdvantage()) {
-			scorePlayer.append("ADV");
+			scorePlayer.append(ADV);
 		} else {
 			scorePlayer.append(player.getPointScore());
 		}
 		scorePlayer.append(ACCOLADE);
 		return scorePlayer;
 	}
-	
+
 	public String getMatchSet() {
-		if (this.playerOne.getSetScore() >= FIVE && this.playerTwo.getSetScore() >= FIVE) {
-			if (Math.abs(this.playerTwo.getSetScore() - this.playerOne.getSetScore()) >= MIN_SETS_GAP_TO_WIN_A_MATCH) {
-				return getLeadPlayer().getName() + WON;
-			} else if (this.playerOne.getSetScore() == this.playerTwo.getSetScore()) {
-				return EQUABILITY;
-			} else {
-				return getLeadPlayer().getName() + ADVANTAGE;
-			}
+		if (isAPlayerReachTheMinGameScoreToWinAMatch() && isGameGapAllowsWinASet()) {
+			return getLeadPlayer().getName() + WON;
+
 		} else {
-			if (this.playerOne.getSetScore() == MIN_SET_SCORE_TO_WIN_A_MATCH
-					|| this.playerTwo.getSetScore() == MIN_SET_SCORE_TO_WIN_A_MATCH) {
-				return getLeadPlayer().getName() + WON;
-			} else {
-				return this.playerOne.getSetScore() + ", " + this.playerTwo.getSetScore();
-			}
+
+			return this.playerOne.getSetScore() + ", " + this.playerTwo.getSetScore();
 		}
+	}
+
+	private boolean isAPlayerReachTheMinGameScoreToWinAMatch() {
+		return this.playerOne.getSetScore() >= MIN_SET_SCORE_TO_WIN_A_MATCH
+				|| this.playerTwo.getSetScore() >= MIN_SET_SCORE_TO_WIN_A_MATCH;
 	}
 
 	public void resetPlayersScores() {

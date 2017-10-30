@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.*;
 
 import java.util.stream.IntStream;
 
@@ -22,11 +23,18 @@ public class MatchTest {
 
 	@Before
 	public void beforeGameTest() {
-		playerNumberOne = new Player("Victor");
-		playerNumberTwo = new Player("Ahmed");
-		match = new Match(playerNumberOne, playerNumberTwo);
+		match = new Match();
+		playerNumberOne = match.getPlayerOne();
+		playerNumberTwo = match.getPlayerTwo();
 	}
 
+	@Test
+	public void shouldMatchCreateTwoPlayersInTheBeginning(){
+		
+		assertNotNull(playerNumberOne) ;
+		assertNotNull(playerNumberTwo) ;
+	}
+	
 	@Test
 	public void shouldSetScoreAndPointScoreBeZeroInTheBeginningOfTheMatchForAllPlayers() {
 
@@ -39,14 +47,14 @@ public class MatchTest {
 
 	@Test
 	public void shouldPointScoreBeFifteenIfPlayerWinTheFirstPoint() {
-		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
 		assertThat(playerNumberTwo, hasProperty("pointScore", equalTo(15)));
 		assertThat(playerNumberOne, hasProperty("pointScore", equalTo(0)));
 	}
 
 	@Test
 	public void shouldPointsScoreBeThirtyIfPlayerWinTheSecondPoint() {
-		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
 		playerNumberTwo.winPoint(playerNumberOne);
 		assertThat(playerNumberTwo, hasProperty("pointScore", equalTo(30)));
 		assertThat(playerNumberOne, hasProperty("pointScore", equalTo(0)));
@@ -54,9 +62,9 @@ public class MatchTest {
 
 	@Test
 	public void shouldPointsScoreBeThirtyIfPlayerOneWinTwoPointAndFifteenIfPlayerTwoWinLonlyPoint() {
-		playerNumberTwo.winPoint( playerNumberOne);
-		playerNumberTwo.winPoint( playerNumberOne);
-		playerNumberOne.winPoint( playerNumberTwo);
+		playerNumberTwo.winPoint(playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
+		playerNumberOne.winPoint(playerNumberTwo);
 		assertThat(playerNumberTwo, hasProperty("pointScore", equalTo(30)));
 		assertThat(playerNumberOne, hasProperty("pointScore", equalTo(15)));
 	}
@@ -64,8 +72,8 @@ public class MatchTest {
 	@Test
 	public void shouldSetScoreBeFortyIfPlayerWinThreePoints() {
 		playerNumberTwo.winPoint(playerNumberOne);
-		playerNumberTwo.winPoint( playerNumberOne);
-		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
 		assertThat(playerNumberTwo, hasProperty("pointScore", equalTo(40)));
 		assertThat(playerNumberOne, hasProperty("pointScore", equalTo(0)));
 	}
@@ -79,7 +87,7 @@ public class MatchTest {
 		match.isDeuceActivated();
 		assertThat(match, hasProperty("deuce", is(false)));
 
-		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
 		match.isDeuceActivated();
 		assertThat(match, hasProperty("deuce", is(true)));
 	}
@@ -90,7 +98,7 @@ public class MatchTest {
 		winPoints(playerNumberOne, playerNumberTwo, 3);
 		winPoints(playerNumberTwo, playerNumberOne, 3);
 
-		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
 		assertThat(playerNumberOne, hasProperty("advantage", is(false)));
 		assertThat(playerNumberTwo, hasProperty("advantage", is(true)));
 	}
@@ -101,8 +109,8 @@ public class MatchTest {
 		winPoints(playerNumberOne, playerNumberTwo, 3);
 		winPoints(playerNumberTwo, playerNumberOne, 4);
 
-		playerNumberTwo.winPoint( playerNumberOne);
-		playerNumberTwo.winPoint( playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
+		playerNumberTwo.winPoint(playerNumberOne);
 		assertThat(playerNumberTwo, hasProperty("setScore", equalTo(2)));
 		assertThat(playerNumberOne, hasProperty("setScore", equalTo(0)));
 	}
@@ -116,8 +124,8 @@ public class MatchTest {
 	@Test
 	public void shouldTieBreakBeActivatedIfTheTwoPlayersReachSix() {
 
-		winSets(playerNumberOne, 6);
-		winSets(playerNumberTwo, 5);
+		winGames(playerNumberOne, 6);
+		winGames(playerNumberTwo, 5);
 		match.isTieBreakActivated();
 		assertThat(match, hasProperty("tieBreak", is(false)));
 		playerNumberTwo.winSet();
@@ -126,25 +134,10 @@ public class MatchTest {
 	}
 
 	@Test
-	public void shouldEquabilityBeTrueWhenAtLeastSixSetsHaveBeenScoredByEachPlayerAndTheScoresIsEqual() {
-
-		winSets(playerNumberOne, 6);
-		winSets(playerNumberTwo, 6);
-
-		match.isTieBreakActivated();
-		assertThat(match.getMatchSet(), is("Equability"));
-		playerNumberOne.winSet();
-		assertThat(match.getMatchSet(), is(not("Equability")));
-		assertThat(match.getMatchSet(), is("Victor on advantage"));
-		playerNumberTwo.winSet();
-		assertThat(match.getMatchSet(), is("Equability"));
-	}
-
-	@Test
 	public void shouldMatchBeWonByTheFirstPlayerWhoWonAtLeastSixSetsAndTheGapIsAtLeastTwo() {
 
-		winSets(playerNumberOne, 5);
-		winSets(playerNumberTwo, 4);
+		winGames(playerNumberOne, 5);
+		winGames(playerNumberTwo, 4);
 
 		assertThat(match.getMatchSet(), is(not("Victor won")));
 		assertThat(match.getMatchSet(), is(not("Ahmed won")));
@@ -155,8 +148,8 @@ public class MatchTest {
 	@Test
 	public void shouldMatchBeWonIfTheTwoPlayersWinAtLeastSixSetsAndTheGapIsGreaterThanTwo() {
 
-		winSets(playerNumberOne, 7);
-		winSets(playerNumberTwo, 6);
+		winGames(playerNumberOne, 7);
+		winGames(playerNumberTwo, 6);
 
 		assertThat(match.getMatchSet(), is(not("Victor won")));
 		assertThat(match.getMatchSet(), is(not("Ahmed won")));
@@ -166,11 +159,11 @@ public class MatchTest {
 
 	private void winPoints(Player winner, Player looser, int n) {
 		IntStream.rangeClosed(1, n).forEach((Integer) -> {
-			winner.winPoint( looser);
+			winner.winPoint(looser);
 		});
 	}
 
-	private void winSets(Player player, int n) {
+	private void winGames(Player player, int n) {
 		IntStream.rangeClosed(1, n).forEach((Integer) -> {
 			player.winSet();
 		});
