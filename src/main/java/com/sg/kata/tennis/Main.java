@@ -16,10 +16,10 @@ public class Main implements Runnable {
 
 	@Override
 	public void run() {
-
-		Player playerOne = new Player("PLAYER A");
-		Player playerTow = new Player("PLAYER B");
-		Match match = new Match(playerOne, playerTow);
+		Match match = new Match();
+		Player playerOne = match.getPlayerOne();
+		Player playerTow = match.getPlayerTwo();
+		
 
 		while (!match.isTheEnd()) {
 
@@ -40,7 +40,7 @@ public class Main implements Runnable {
 				Thread.sleep(500);
 			} catch (InterruptedException exception) {
 
-				exception.printStackTrace();
+				System.err.println(exception.getMessage());
 			}
 
 		}

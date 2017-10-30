@@ -19,7 +19,7 @@ public interface Constants {
 	public static final int TIEBREAK_SET_SCORE = 6;
 	public static final int MIN_SET_SCORE_TO_WIN_A_MATCH = 6;
 	public static final int FIVE = 5;
-	public static final String NAME_PLAYER_ONE ="Victor";
-	public static final String NAME_PLAYER_TWO ="Ahmed";
+	public static final String NAME_PLAYER_ONE ="PLAYER ONE";
+	public static final String NAME_PLAYER_TWO ="PLAYER TWO";
 }
  
